@@ -1,0 +1,13 @@
+@import "tailwindcss";
+
+body{
+  background-color: black;
+  background-image: url('/mainbg.svg');
+  background-size: cover;
+  background-position: center;   
+  background-repeat: no-repeat;  
+  background-attachment: fixed;  
+  
+  font-family: 'Sora', sans-serif;
+  font-weight: 400;
+}
