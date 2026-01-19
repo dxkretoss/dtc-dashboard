@@ -1,3 +1,4 @@
+import { Bold } from "lucide-react";
 import {
   ResponsiveContainer,
   ComposedChart,
@@ -23,12 +24,12 @@ const LOGOS = {
 const CustomXAxis = ({ x, y, payload, data }) => {
   const item = data[payload.index];
 
-  if (item.name === "Other") {
+  if (item.name === "Others") {
     return (
       <text
         x={x}
         y={y + 18}
-        fill="#fff"
+        fill="#FFFFFF"
         fontSize="12"
         textAnchor="middle"
       >
@@ -40,8 +41,8 @@ const CustomXAxis = ({ x, y, payload, data }) => {
   return (
     <image
       href={item.img}
-      x={x - 12}
-      y={y + 4}
+      x={x - 32}
+      y={y}
     />
   );
 };
