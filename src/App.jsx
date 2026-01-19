@@ -3,7 +3,7 @@ import DashboardLayout from "./components/layout/DashboardLayout"
 import Strategic from "./pages/kpis/Strategic"
 import Talent from "./pages/kpis/Talent"
 import Business from "./pages/kpis/Business"
-
+import Community from "./pages/kpis/Community"
 function App() {
   return (
     <Routes>
@@ -12,7 +12,7 @@ function App() {
         <Route path="strategic" element={<Strategic />} />
         <Route path="talent" element={<Talent />} />
         <Route path="business" element={<Business />} />
-        <Route path="community" element={<Strategic />} />
+        <Route path="community" element={<Community />} />
         <Route path="status" element={<Strategic />} />
         <Route path="initiatives" element={<Strategic />} />
         <Route path="finance" element={<Strategic />} />

@@ -1,7 +1,7 @@
 import { NavLink } from "react-router-dom"
 
 const kpis = [
-    { name: "Strategic", icon: "/Sidebar/Strategic.svg", path: "/strategic" },
+    { name: "Strategic", icon: "/Sidebar/Strategic.svg", path: "/" },
     { name: "Talent development & attraction", icon: "/Sidebar/Talent.svg", path: "/talent" },
     { name: "Business attraction", icon: "/Sidebar/Business.svg", path: "/business" },
     { name: "Community engagement", icon: "/Sidebar/Community.svg", path: "/community" },
