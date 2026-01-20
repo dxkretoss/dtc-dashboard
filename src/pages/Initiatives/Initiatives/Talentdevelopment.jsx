@@ -1,5 +1,11 @@
 import React, { useRef, useState } from "react";
 import Talentdevelopment from "../../../components/InitiativesTab/Talentdevelopment";
+import Talentattraction from "./Talentattraction";
+import Outreach from "./Outreach";
+import BusinessEnablement from "./BusinessEnablement";
+import Regulationlicensing from "./Regulationlicensing";
+import MarketingPR from "./MarketingPR";
+import Incentivesfunding from "./Incentivesfunding";
 
 const TABS = [
   "Talent development",
@@ -103,12 +109,13 @@ export default function InitiativesTabs() {
         {/* ---------------- TAB CONTENT ---------------- */}
         <div className="mt-4">
           {activeTab === "Talent development" && <Talentdevelopment />}
-
-          {activeTab !== "Talent development" && (
-            <div className="text-white/50 text-sm py-10 text-center">
-              {activeTab} content coming soon
-            </div>
-          )}
+          {activeTab === "Talent attraction" && <Talentattraction />}
+          {activeTab === "Outreach" && <Outreach />}
+          {activeTab === "Business enablement" && <BusinessEnablement />}
+          {activeTab === "Regulation & licensing" && <Regulationlicensing />}
+          {activeTab === "Marketing & PR" && <MarketingPR />}
+          {activeTab === "Incentives & funding" && <Incentivesfunding />}
+          
         </div>
       </div>
     </div>
