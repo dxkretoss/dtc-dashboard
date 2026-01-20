@@ -6,22 +6,10 @@ import {
   YAxis,
   CartesianGrid,
   LabelList,
+  Cell,
 } from "recharts";
 
-const data = [
-  { name: "MFCC", unique: 5.3, recurrent: 0.6 },
-  { name: "Mother of the Nation", unique: 4.4, recurrent: 1.0 },
-  { name: "Animenia", unique: 3.5, recurrent: 0.5 },
-  { name: "Breakroom Games", unique: 2.9, recurrent: 0.2 },
-  { name: "Najah Expo", unique: 2.8, recurrent: 0.8 },
-  { name: "Tokyo Games Shadow", unique: 2.2, recurrent: 0.3 },
-  { name: "BRG - Yas Mall", unique: 1.9, recurrent: 0.1 },
-  { name: "Compass Event", unique: 1.6, recurrent: 0.2 },
-  { name: "Tawdhif", unique: 0.9, recurrent: 0.1 },
-  { name: "Others", unique: 7.0, recurrent: 0 },
-];
-
-export default function AttendanceChart() {
+export default function AttendanceChart({ data = [] }) {
   return (
     <div
       className="relative rounded-[16px] p-4 h-[340px] text-white"
@@ -49,10 +37,7 @@ export default function AttendanceChart() {
           margin={{ top: 20, right: 20, bottom: 40, left: 10 }}
           barGap={8}
         >
-          <CartesianGrid
-            stroke="rgba(255,255,255,0.08)"
-            vertical={false}
-          />
+          <CartesianGrid stroke="rgba(255,255,255,0.08)" vertical={false} />
 
           <XAxis
             dataKey="name"
@@ -63,19 +48,26 @@ export default function AttendanceChart() {
           <YAxis hide />
 
           {/* Recurrent attendance (bottom) */}
-          <Bar
-            dataKey="recurrent"
-            stackId="attendance"
-            fill="#FF7A5C"
-          />
+          <Bar dataKey="recurrent" stackId="attendance">
+            {data.map((entry, index) => (
+              <Cell
+                key={`recurrent-${index}`}
+                fill={entry.name === "Others" ? "#9B92AD" : "#FF7A5C"}
+                radius={entry.remaining === 0 ? [8, 8, 0, 0] : [0, 0, 0, 0]}
+              />
+            ))}
+          </Bar>
 
           {/* Unique attendance (top) */}
-          <Bar
-            dataKey="unique"
-            stackId="attendance"
-            fill="#6F687D"
-            radius={[8, 8, 0, 0]}
-          >
+          <Bar dataKey="remaining" stackId="attendance" radius={[8, 8, 0, 0]}>
+            {data.map((entry, index) => (
+              <Cell
+                key={`remaining-${index}`}
+                fill={entry.name === "Others" ? "#9B92AD" : "#6F687D"}
+              />
+            ))}
+
+            {/* Label shows UNIQUE value */}
             <LabelList
               dataKey="unique"
               position="top"

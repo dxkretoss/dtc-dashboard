@@ -1,3 +1,4 @@
+import { useState } from "react"
 import { NavLink } from "react-router-dom"
 
 const kpis = [
@@ -36,6 +37,15 @@ function SidebarItem({ item }) {
 }
 
 export default function Sidebar() {
+
+     const [theme, setTheme] = useState("dark")
+
+    const toggleTheme = () => {
+        const newTheme = theme === "dark" ? "light" : "dark"
+        setTheme(newTheme)
+        document.documentElement.classList.toggle("dark", newTheme === "dark")
+    }
+
     return (
         <div
             className="h-screen w-[185px] p-2 flex flex-col rounded-[16px] transition-colors"
@@ -68,6 +78,28 @@ export default function Sidebar() {
                 {initiatives.map((item, index) => (
                     <SidebarItem key={index} item={item} />
                 ))}
+            </div>
+
+            <div className="mt-auto pt-4">
+                <div
+                    onClick={toggleTheme}
+                    className="flex items-center justify-between px-3 py-2 rounded-lg cursor-pointer
+                    bg-white/5 hover:bg-white/10 transition-all"
+                >
+                    <span className="text-[12px] text-white/70">
+                        {theme === "dark" ? "Dark Mode" : "Light Mode"}
+                    </span>
+
+                    <div
+                        className={`w-9 h-5 rounded-full p-[2px] transition-all
+                        ${theme === "dark" ? "bg-white/30" : "bg-black/30"}`}
+                    >
+                        <div
+                            className={`w-4 h-4 rounded-full bg-white transition-all
+                            ${theme === "dark" ? "translate-x-4" : "translate-x-0"}`}
+                        />
+                    </div>
+                </div>
             </div>
         </div>
     )

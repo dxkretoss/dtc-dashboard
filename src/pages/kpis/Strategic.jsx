@@ -8,7 +8,6 @@ const SHEET_URL =
 
 
 export default function Strategic() {
-
     const [data, setData] = useState(null)
 
     useEffect(() => {
