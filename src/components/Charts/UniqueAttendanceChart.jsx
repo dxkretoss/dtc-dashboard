@@ -1,25 +1,19 @@
 import * as d3 from 'd3';
 import { useEffect, useRef } from 'react';
 
-const segments = [
-  { name: 'Esports', value: 9100, percent: 30, color: '#4832B8' },
-  { name: 'Talent development', value: 3700, percent: 13, color: '#7086FD' },
-  { name: 'B2B', value: 3700, percent: 12, color: '#CC3150' },
-  { name: 'Community', value: 13700, percent: 45, color: '#D9D9D9' },
-];
+const COLORS = {
+  esports: '#4832B8',
+  'talent development': '#7086FD',
+  b2b: '#CC3150',
+  community: '#D9D9D9',
+};
 
-const gapTargets = [
-  { value: 1000, label: '1k' },
-  { value: 4000, label: '4k' },
-  { value: 1000, label: '1k' },
-  { value: 12000, label: '12k' },
-];
-
-
-export default function AttendanceChart() {
+export default function UniqueAttendanceChart({ data }) {
   const ref = useRef(null);
 
   useEffect(() => {
+    if (!data) return;
+
     const width = 520;
     const height = 520;
     const center = width / 2;
@@ -34,7 +28,25 @@ export default function AttendanceChart() {
       .append('g')
       .attr('transform', `translate(${center},${center})`);
 
-    /* ---------- PIE SETUP ---------- */
+    /* ---------- BUILD SEGMENTS ---------- */
+    const segments = Object.entries(data).map(([key, value]) => ({
+      name: key,
+      value: value.actual * 1000,
+      percent: Math.round(
+        (value.actual /
+          Object.values(data).reduce((a, b) => a + b.actual, 0)) *
+          100
+      ),
+      color: COLORS[key],
+    }));
+
+    /* ---------- GAP TARGETS ---------- */
+    const gapTargets = Object.entries(data).map(([_, value]) => ({
+      value: value.gap * 1000,
+      label: `${value.gap}k`,
+    }));
+
+    /* ---------- PIE ---------- */
     const pie = d3
       .pie()
       .value(d => d.value)
@@ -59,7 +71,7 @@ export default function AttendanceChart() {
       .attr('d', arc)
       .attr('fill', d => d.data.color);
 
-    /* ---------- SEGMENT LABELS ---------- */
+    /* ---------- LABELS ---------- */
     svg
       .selectAll('.value-label')
       .data(arcs)
@@ -67,15 +79,17 @@ export default function AttendanceChart() {
       .append('text')
       .attr('transform', d => `translate(${arc.centroid(d)})`)
       .attr('text-anchor', 'middle')
-      .attr('fill', d => (d.data.name === 'Community' ? '#000' : '#fff'))
+      .attr('fill', d =>
+        d.data.name === 'community' ? '#000' : '#fff'
+      )
       .style('font-size', '12px')
       .style('font-weight', 600)
-      .html(
+      .text(
         d =>
-          `${(d.data.value / 1000).toFixed(1)}k\n(${d.data.percent}%)`
+          `${(d.data.value / 1000).toFixed(1)}k (${d.data.percent}%)`
       );
 
-    /* ---------- GAP TO TARGET RING ---------- */
+    /* ---------- GAP RING ---------- */
     const gapArc = d3
       .arc()
       .innerRadius(170)
@@ -107,17 +121,12 @@ export default function AttendanceChart() {
       .style('font-size', '11px')
       .text(d => d.data.label);
 
-    /* ---------- CENTER HOLE ---------- */
+    /* ---------- CENTER ---------- */
     svg
       .append('circle')
       .attr('r', 65)
       .attr('fill', '#2A465D');
+  }, [data]);
 
-  }, []);
-
-  return (
-    <div>
-      <div ref={ref} />
-    </div>
-  );
+  return <div ref={ref} />;
 }

@@ -46,9 +46,7 @@ export default function Community() {
       });
   }, []);
 
-  if (!data) return <CommunityEngagementSkeleton/>;
-
-  console.log(data);
+  if (!data) return <CommunityEngagementSkeleton />;
 
   const attendance = data["attendance per event"] || {
     actual: 0,
@@ -104,6 +102,13 @@ export default function Community() {
       ...data["website visits"],
     },
   ];
+
+  const attendanceData = {
+    esports: data["esports"],
+    "talent development": data["talent development"],
+    b2b: data["b2b"],
+    community: data["community"],
+  };
 
   return (
     <div className="w-full">
@@ -230,7 +235,7 @@ export default function Community() {
                   gap={item.gap}
                 />
               ))}
-            </div>            
+            </div>
           </div>
         </div>
 
@@ -258,7 +263,7 @@ export default function Community() {
                 </span>
               </div>
 
-              <UniqueAttendanceChart />
+              <UniqueAttendanceChart data={attendanceData} />
             </div>
           </div>
         </div>

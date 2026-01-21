@@ -17,7 +17,6 @@ const TABS = [
   "Incentives & funding",
   "Communities",
   "Teams & athletes",
-  "Events & facilities",
 ];
 
 export default function InitiativesTabs() {
@@ -114,8 +113,7 @@ export default function InitiativesTabs() {
           {activeTab === "Business enablement" && <BusinessEnablement />}
           {activeTab === "Regulation & licensing" && <Regulationlicensing />}
           {activeTab === "Marketing & PR" && <MarketingPR />}
-          {activeTab === "Incentives & funding" && <Incentivesfunding />}
-          
+          {activeTab === "Incentives & funding" && <Incentivesfunding />}          
         </div>
       </div>
     </div>
