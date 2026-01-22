@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState,useEffect } from "react";
 import { ChevronRight } from "lucide-react";
 import FormalEducation from "../Talentdevelopment/FormalEducation";
 import MidSchool from "../Talentdevelopment/MidSchool";
@@ -6,8 +6,23 @@ import SpecializedSkills from "../Talentdevelopment/SpecializedSkills";
 import JobPortal from "../Talentdevelopment/JobPortal";
 import InternshipFund from "../Talentdevelopment/InternshipFund";
 
+const ACTIVE_TAB_KEY = "talentdevelopment_active_tab";
+
 export default function Talentdevelopment() {
-  const [activeView, setActiveView] = useState(null);
+  // ✅ Load from localStorage
+  const [activeView, setActiveView] = useState(() => {
+    if (typeof window === "undefined") return null;
+    return localStorage.getItem(ACTIVE_TAB_KEY);
+  });
+
+  // ✅ Persist to localStorage
+  useEffect(() => {
+    if (activeView) {
+      localStorage.setItem(ACTIVE_TAB_KEY, activeView);
+    } else {
+      localStorage.removeItem(ACTIVE_TAB_KEY);
+    }
+  }, [activeView]);
 
   // Render selected component
   if (activeView === "formal") {

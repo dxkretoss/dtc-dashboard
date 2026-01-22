@@ -332,7 +332,13 @@ export default function MidSchool({ onBack }) {
                       </span>
                     </div>
 
-                    <div className="w-[116px] h-[116px] rounded-full border-10 border-white/10 flex items-center justify-center">
+                    <GamingeventDonut
+                      total={kpi.yearlyTarget}
+                      green={kpi.actual}
+                      blue={kpi.gapMonthly}
+                    />
+
+                    {/* <div className="w-[116px] h-[116px] rounded-full border-10 border-white/10 flex items-center justify-center">
                       <div className="text-xs text-white text-center">
                         2025
                         <br />
@@ -342,7 +348,7 @@ export default function MidSchool({ onBack }) {
                           {kpi.yearlyTarget || "TBD"}
                         </span>
                       </div>
-                    </div>
+                    </div> */}
                   </div>
                 </div>
               ))}
@@ -535,3 +541,86 @@ const NextStepRow = ({ activity, owner, date, status, color }) => {
     </div>
   );
 };
+
+function GamingeventDonut({ total = 0, green = 0, blue = 0 }) {
+  const radius = 46;
+  const stroke = 10;
+  const normalizedRadius = radius - stroke / 2;
+  const circumference = normalizedRadius * 2 * Math.PI;
+
+  const safeTotal = Number(total);
+
+  const hasGreen =
+    Number.isFinite(safeTotal) &&
+    safeTotal > 0 &&
+    Number.isFinite(green) &&
+    green > 0;
+
+  const hasBlue =
+    Number.isFinite(safeTotal) &&
+    safeTotal > 0 &&
+    Number.isFinite(blue) &&
+    blue > 0;
+
+  const greenPct = hasGreen ? green / safeTotal : 0;
+  const bluePct = hasBlue ? blue / safeTotal : 0;
+
+  const greenLen = greenPct * circumference;
+  const blueLen = bluePct * circumference;
+
+  return (
+    <div className="relative w-[116px] h-[116px]">
+      <svg width="116" height="116" className="rotate-[-90deg]">
+        {/* Background ring */}
+        <circle
+          stroke="rgba(255,255,255,0.12)"
+          fill="transparent"
+          strokeWidth={stroke}
+          r={normalizedRadius}
+          cx="58"
+          cy="58"
+        />
+
+        {/* Blue arc – only if value > 0 */}
+        {hasBlue && (
+          <circle
+            stroke="#E1E1E133"
+            fill="transparent"
+            strokeWidth={stroke}
+            strokeLinecap="round"
+            strokeDasharray={`${blueLen} ${circumference}`}
+            strokeDashoffset={-greenLen}
+            r={normalizedRadius}
+            cx="58"
+            cy="58"
+          />
+        )}
+
+        {/* Green arc – only if value > 0 */}
+        {hasGreen && (
+          <circle
+            stroke="#3BAB78"
+            fill="transparent"
+            strokeWidth={stroke}
+            strokeLinecap="round"
+            strokeDasharray={`${greenLen} ${circumference}`}
+            strokeDashoffset={0}
+            r={normalizedRadius}
+            cx="58"
+            cy="58"
+          />
+        )}
+      </svg>
+
+      {/* Center content */}
+      <div className="absolute inset-0 flex flex-col items-center justify-center">
+        <span className="text-[#929BA4] text-[12px]">2025</span>
+        <span className="text-[#929BA4] text-[12px]">target</span>
+        <span className="text-white font-semibold text-[15px]">
+          {safeTotal}
+        </span>
+      </div>
+    </div>
+  );
+}
+

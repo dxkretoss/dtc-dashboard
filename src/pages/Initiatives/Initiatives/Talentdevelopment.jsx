@@ -1,4 +1,4 @@
-import React, { useRef, useState } from "react";
+import React, { useRef, useState,useEffect  } from "react";
 import Talentdevelopment from "../../../components/InitiativesTab/Talentdevelopment";
 import Talentattraction from "./Talentattraction";
 import Outreach from "./Outreach";
@@ -18,9 +18,18 @@ const TABS = [
   "Communities",
   "Teams & athletes",
 ];
+const ACTIVE_TAB_KEY = "initiatives_active_tab";
 
 export default function InitiativesTabs() {
-  const [activeTab, setActiveTab] = useState(TABS[0]);
+ const [activeTab, setActiveTab] = useState(() => {
+    if (typeof window === "undefined") return TABS[0];
+    return localStorage.getItem(ACTIVE_TAB_KEY) || TABS[0];
+  });
+
+  // ✅ Save tab to localStorage whenever it changes
+  useEffect(() => {
+    localStorage.setItem(ACTIVE_TAB_KEY, activeTab);
+  }, [activeTab]);
   const scrollRef = useRef(null);
 
   /* -------- DRAG SCROLL LOGIC -------- */
